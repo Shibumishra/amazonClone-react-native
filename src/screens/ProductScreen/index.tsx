@@ -8,6 +8,18 @@ import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
 import ImageCarousel from '../../components/ImageCarousel';
 
+interface ProductItemProps {
+    item: {
+      id: string;
+      title: string;
+      image: string;
+      avgRating: number;
+      ratings: number;
+      price: number;
+      oldPrice?: number;
+    }
+  };
+  
 const ProductScreen = () => {
     const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined,);
     const [quantity, setQuantity] = useState(1);

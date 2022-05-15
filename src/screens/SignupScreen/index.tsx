@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import CoustomInput from '../../components/CoustomInput';
 import styles from './styles';
 import Button from '../../components/Button';
+import { Auth } from '../../services';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -11,7 +12,8 @@ const Signup = () => {
     const [conformPassword, setConformPassword] = useState('');
 
     const onRegister = () => {
-        console.warn('on Register')
+        console.warn('on Register');
+        Auth.signUp(email, password)
     }
 
     const onTermsOfCondition = () => {
@@ -48,7 +50,7 @@ const Signup = () => {
             />
             <Button
                 text="Register"
-                onPress={onRegister}
+                onPress={() => Auth.signUp(username ,email, password)}
                 containerStyles={{ backgroundColor: '#f3d078', width: '100%', }}
             />
             <Text style={styles.text}>

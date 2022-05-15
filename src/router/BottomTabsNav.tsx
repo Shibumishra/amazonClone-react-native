@@ -9,6 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
 import Signin from '../screens/SigninScreen';
 import SigninStack from './SigninStack';
+import { AuthProvider } from './AuthProvider';
 
 interface nameInterface {
     namr: string;
@@ -48,7 +49,7 @@ const BottomTabsNav = () => {
               })}
             >
                 <Tab.Screen name="Home" component={HomeStack} />
-                <Tab.Screen name="Profile" component={SigninStack} />
+                <Tab.Screen name="Profile" component={AuthProvider} />
                 <Tab.Screen name="ShoopingCart" component={ShoopingCartStack} />
                 <Tab.Screen name="More" component={HomeScreen} />
             </Tab.Navigator>
