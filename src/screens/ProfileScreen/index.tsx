@@ -1,14 +1,36 @@
-import React from 'react';
-import { View, Text, Touchable, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import Button from '../../components/Button';
 import { Auth } from '../../services';
+import firestore from '@react-native-firebase/firestore';
+
+const ProfileScreen = () => {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const subscriber = firestore()
+            .collection('users')
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                    setUsers(documentSnapshot.data())
+                    setLoading(false)
+                });
+            });
+
+        return () => subscriber();
+    }, []);
 
 
-const ProfileScreen = ({ user }) => {
+    if (loading) {
+        return <ActivityIndicator />;
+    }
+
     return (
         <View>
             <Text>
-                <Text>Welcome {user.email}</Text>
+                <Text>Welcome to, {users?.fullname}</Text>
             </Text>
             <TouchableOpacity>
                 <Button text="SignOut"

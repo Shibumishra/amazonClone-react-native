@@ -61,25 +61,11 @@ const signOut = () => {
 }
 
 
-
-const getUser = () => {
-    return firebase()
-        .collection('users')
-        .get()
-        .then(querySnapshot => {
-            const users = []
-            querySnapshot.forEach(user => users.push(user.data()))
-            return User;
-        })
-        .catch(err => err)
-}
-
 const Auth = {
     signIn,
     signUp,
     forgetPassword,
-    signOut,
-    getUser
+    signOut
 }
 
 export default Auth;
