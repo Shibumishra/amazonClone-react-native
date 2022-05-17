@@ -4,11 +4,13 @@ import HomeScreen from '../screens/HomeScreen';
 import ProductScreen from '../screens/ProductScreen';
 import { Text } from 'react-native';
 import Header from '../components/Header';
+import ShoopingCartStack from './ShoopingCartStack';
 
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
     const [searchValue, setSearchValue] = useState('');
+    const [addToCart, setAddToCart] = useState(0)
 
     return (
         <Stack.Navigator
@@ -24,6 +26,9 @@ const HomeStack = () => {
                 {() => <HomeScreen searchValue={searchValue} />}
             </Stack.Screen>
             <Stack.Screen name="ProductDetails" component={ProductScreen} />
+            <Stack.Screen name="ShoopingCartStack" >
+                {() => <ShoopingCartStack />}
+            </Stack.Screen>
         </Stack.Navigator>
     )
 }

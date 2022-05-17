@@ -20,8 +20,9 @@ export default [
     ],
     avgRating: 4.8,
     ratings: 2989,
-    price: 99.98,
     oldPrice: 120.06,
+    price: 99.98,
+    quantity: 0,
   },
   {
     id: "1",
@@ -51,7 +52,10 @@ export default [
     ratings: 2989,
     isAccessory: false,
     brand: "Puma",
-    price: 7999
+    oldPrice: 120.06,
+    price: 7999,
+    quantity: 0,
+    option: 'Space Grey',
   },
   {
     id: "2",
@@ -79,6 +83,7 @@ export default [
     ratings: 2989,
     isAccessory: false,
     brand: "Puma",
+    oldPrice: 120.06,
     price: 7999
   },
   {
@@ -110,7 +115,10 @@ export default [
     ratings: 2989,
     isAccessory: false,
     brand: "Hush Puppies",
-    price: 6999
+    oldPrice: 120.06,
+    price: 6999,
+    quantity: 0,
+    option: 'Black',
   },
   {
     id: "4",
@@ -137,9 +145,11 @@ export default [
       'Red',
     ],
     avgRating: 4.8,
+    quantity: 0,
     ratings: 2989,
     isAccessory: false,
     brand: "BARESKIN",
+    oldPrice: 120.06,
     price: 9999
   },
   {
@@ -167,9 +177,11 @@ export default [
       'Red',
     ],
     avgRating: 4.8,
+    quantity: 0,
     ratings: 2989,
     isAccessory: false,
     brand: "SASSAFRAS",
+    oldPrice: 120.06,
     price: 5200
   },
   {
@@ -196,9 +208,11 @@ export default [
       'Red',
     ],
     avgRating: 4.8,
+    quantity: 0,
     ratings: 2989,
     isAccessory: true,
     brand: "Apple",
+    oldPrice: 120.06,
     price: 31999
   },
   {
@@ -224,9 +238,11 @@ export default [
       'Red',
     ],
     avgRating: 4.8,
+    quantity: 0,
     ratings: 2989,
     isAccessory: true,
     brand: "Fastrack",
+    oldPrice: 120.06,
     price: 1999
   },
   {
@@ -252,9 +268,11 @@ export default [
       'Red',
     ],
     avgRating: 4.8,
+    quantity: 0,
     ratings: 2989,
     isAccessory: true,
     brand: "Samsung",
+    oldPrice: 120.06,
     price: 9990
   },
   {
@@ -280,9 +298,11 @@ export default [
       'Red',
     ],
     avgRating: 4.8,
+    quantity: 0,
     ratings: 2989,
     isAccessory: true,
     brand: "Samsung",
+    oldPrice: 120.06,
     price: 13990
   },
   {
@@ -308,9 +328,11 @@ export default [
       'Red',
     ],
     avgRating: 4.8,
+    quantity: 0,
     ratings: 2989,
     isAccessory: true,
     brand: "Apple",
+    oldPrice: 120.06,
     price: 14999
   }
 ]

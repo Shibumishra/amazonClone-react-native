@@ -1,38 +1,57 @@
 import React, { useState } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { Alert, ScrollView, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import styles from './styles';
 import product from '../../data/product';
 import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
 import ImageCarousel from '../../components/ImageCarousel';
+import { AddToCartProduct } from '../../services';
 
 interface ProductItemProps {
     item: {
-      id: string;
-      title: string;
-      image: string;
-      avgRating: number;
-      ratings: number;
-      price: number;
-      oldPrice?: number;
+        id: string;
+        title: string;
+        image: string;
+        avgRating: number;
+        ratings: number;
+        price: number;
+        oldPrice?: number;
     }
-  };
-  
+};
+
 const ProductScreen = () => {
     const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined,);
     const [quantity, setQuantity] = useState(1);
 
     const route = useRoute();
+    const navigation = useNavigation();
+    const data = route.params
 
+    const { title } = route?.params
+    const { images } = route?.params
+    const { price } = route?.params
+    const { oldPrice } = route?.params
+    const { description } = route?.params
+
+    const addToCart = () => {
+        navigation.navigate('ShoopingCart', data);
+
+        AddToCartProduct.addProduct({ ...data })
+            .then(
+                Alert.alert('Success', 'Product added'))
+            .catch(
+                err => Alert.alert(err.code, err.message))
+    }
 
     return (
         <ScrollView style={styles.root}>
-            <Text style={styles.title}>{route?.params?.title}</Text>
+            <Text style={styles.title}>{title}</Text>
 
             {/* Image Carousel */}
-            <ImageCarousel images={route?.params?.images} />
+            <ImageCarousel images={images} />
 
             {/* Option Selector */}
             <Text>Colour:</Text>
@@ -42,21 +61,21 @@ const ProductScreen = () => {
                     setSelectedOption(itemValue)
                 }
             >
-                {route?.params?.options.map(options => (
+                {data.options.map(options => (
                     <Picker.Item label={options} value={options} />
                 ))}
             </Picker>
 
             {/* Price */}
             <Text style={styles.price}>
-                from ${route?.params?.price.toFixed(2)}
-                {route?.params?.oldPrice && (
-                    <Text style={styles.oldPrice}> ${route?.params?.oldPrice.toFixed(2)}</Text>
+                from ${price.toFixed(2)}
+                {oldPrice && (
+                    <Text style={styles.oldPrice}> ${oldPrice.toFixed(2)}</Text>
                 )}
             </Text>
 
             {/* Description */}
-            <Text style={styles.description}>{route?.params?.description}</Text>
+            <Text style={styles.description}>{description}</Text>
 
             {/* Qunatiti Selector */}
             <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
@@ -70,7 +89,7 @@ const ProductScreen = () => {
             />
             <Button
                 text="Add To Cart"
-                onPress={() => { console.log("Add TO Cart") }}
+                onPress={addToCart}
                 containerStyles={{ backgroundColor: '#f2e03a', }}
             />
 
