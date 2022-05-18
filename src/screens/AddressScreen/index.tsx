@@ -1,21 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, TextInput, View, Alert, ScrollView, KeyboardAvoidingView, Platform, } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import ContryList from 'country-list';
 import Button from '../../components/Button';
 import styles from './styles';
+import { Address } from '../../services';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const countrys = ContryList.getData();
 
 const AddressScreen = () => {
+    const navigation = useNavigation();
+    const route = useRoute();
     const [country, setCountry] = useState(countrys[0].code);
     const [fullname, setFullName] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [addressError, setAddressError] = useState('');
     const [city, setCity] = useState('');
+    const [user, setUser] = useState(null);
+    // const [productId, setProductId] = useState('');
+    const [deleted, setDeleted] = useState(false);
 
-    console.log(fullname);
+    // Handle user state changes
+    const onAuthStateChanged = (user) => {
+        setUser(user);
+    }
+
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber; // unsubscribe on unmount
+    }, []);
+
+
+    // useEffect(() => {
+    //     const Products = firestore()
+    //         .collection('products')
+    //         .get()
+    //         .then(querySnapshot => {
+    //             querySnapshot.forEach(documentSnapshot => {
+    //                 setProductId(documentSnapshot.id)
+    //             });
+    //         });
+    //     return () => Products();
+    // }, []);
+
+    const User = user ? user?.email : user;
+    const { productId } = route.params
+
+
+    const deleteFirestoreData = () => {
+        firestore()
+            .collection('products')
+            .doc(productId)
+            .delete()
+            .then(() => {
+                setDeleted(true);
+            })
+            .catch((e) => console.log('Error deleting posst.', e));
+    };
+
 
     const onCheckout = () => {
         if (addressError) {
@@ -32,6 +78,14 @@ const AddressScreen = () => {
             Alert.alert('Please fill in the phone number field');
             return;
         }
+
+        Address.addAddress(User, productId, country, fullname, phone, address, city)
+            .then(() => {
+                navigation.navigate('HomeStack')
+                deleteFirestoreData()
+            })
+            .catch(
+                err => Alert.alert(err.code, err.message))
     }
 
     const validateAddress = () => {
@@ -39,6 +93,8 @@ const AddressScreen = () => {
             setAddressError('Address is too short');
         }
     };
+
+    console.log('productId..2', productId)
 
     return (
         <KeyboardAvoidingView

@@ -8,34 +8,54 @@ import Button from '../../components/Button';
 import { AddToCartProduct } from '../../services';
 import firestore from '@react-native-firebase/firestore';
 
+
+
 const ShoopingCartScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const [products, setProducts] = useState([]);
+    const [productId, setProductId] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const totalPrice = cart.reduce((summedPrice, product) => (
-        summedPrice + product.item.price * product.quantity
-    ), 0);
-
     const onCheckout = () => {
-        navigation.navigate('Address');
+        navigation.navigate('Address', { productId: productId });
     }
 
 
-    useEffect(() => {
-        AddToCartProduct.getProduct()
+
+    const loadData = async () => {
+        await AddToCartProduct.getProduct()
             .then(prod => {
                 setProducts(prod)
                 setLoading(false)
+
+                prod.forEach(snpa => {
+                    setProductId(snpa.id);
+                });
             })
             .catch(err => Alert.alert(err.code, err.message))
-    }, []);
 
+    }
+    useEffect(() => {
+        loadData()
+    }, [])
+    // useEffect(()=> {
+    //     let totalPrice = price;
+    //     products.forEach((item) => {
+    //        totalPrice += item.reduce((summedPrice, product) => (
+    //             summedPrice + product.data.price * product.quantity
+    //         ), 0);
+    //     });
+    //     setPrice(totalPrice)
+    // }, [])
+
+    const totalPrice = products &&
+        products.reduce((acc, item) => acc + item?.data?.price, 0)
 
     if (loading) {
         return <ActivityIndicator />;
     }
+    console.log('productId..1', productId)
 
     return (
         <View style={styles.page}>
@@ -47,7 +67,7 @@ const ShoopingCartScreen = () => {
                     <View>
                         <Text style={{ fontSize: 18 }}>Subtotal: ({products.length} item):
                             {' '}
-                            <Text style={{ color: '#e47911', fontWeight: 'bold' }}>${totalPrice.toFixed(2)}</Text>
+                            <Text style={{ color: '#e47911', fontWeight: 'bold' }}>${totalPrice?.toFixed(2)}</Text>
                         </Text>
                         <Button
                             text="Proceed to checkout"

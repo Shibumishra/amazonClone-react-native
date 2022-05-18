@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import { Auth } from '../../services';
 import firestore from '@react-native-firebase/firestore';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ user }) => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -28,9 +28,9 @@ const ProfileScreen = () => {
     }
 
     return (
-        <View>
+        <View style={{margin: 10, }}>
             <Text>
-                <Text>Welcome to, {users?.fullname}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>Welcome to, {users?.email}</Text>
             </Text>
             <TouchableOpacity>
                 <Button text="SignOut"

@@ -15,7 +15,12 @@ const getProduct = () => {
         .get()
         .then(snap => {
             const products = []
-            snap.forEach(product => products.push(product.data()))
+            snap.forEach(product => {
+                products.push({
+                    ...product.data(),
+                    id: product.id,
+                })
+            })
             return products;
         })
         .catch(err => err)

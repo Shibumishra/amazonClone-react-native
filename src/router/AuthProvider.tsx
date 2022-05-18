@@ -24,7 +24,7 @@ export const AuthProvider = () => {
 
     return (
         <>
-            {user ? <ProfileScreen /> : <SigninStack />}
+            {user ? <ProfileScreen user={user} /> : <SigninStack /> }
         </>
     )
 }

@@ -36,14 +36,17 @@ const ProductScreen = () => {
     const { oldPrice } = route?.params
     const { description } = route?.params
 
-    const addToCart = () => {
-        navigation.navigate('ShoopingCart', data);
+    const addToCart = async () => {
+        navigation.navigate('ShoopingCart');
 
-        AddToCartProduct.addProduct({ ...data })
-            .then(
-                Alert.alert('Success', 'Product added'))
+        await AddToCartProduct.addProduct({ ...data })
+            .then(() => {
+                Alert.alert('Success', 'Product added')
+            }
+            )
             .catch(
                 err => Alert.alert(err.code, err.message))
+
     }
 
     return (
