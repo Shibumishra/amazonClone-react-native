@@ -71,7 +71,7 @@ const ProductScreen = () => {
 
             {/* Price */}
             <Text style={styles.price}>
-                from ${price.toFixed(2)}
+                from Rs. {price.toFixed(2)}
                 {oldPrice && (
                     <Text style={styles.oldPrice}> ${oldPrice.toFixed(2)}</Text>
                 )}

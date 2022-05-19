@@ -5,9 +5,11 @@ import { Picker } from '@react-native-picker/picker';
 import ContryList from 'country-list';
 import Button from '../../components/Button';
 import styles from './styles';
-import { Address } from '../../services';
+import { Address, Checkout, Payment } from '../../services';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import RazorpayCheckout from 'react-native-razorpay';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 const countrys = ContryList.getData();
 
@@ -21,10 +23,63 @@ const AddressScreen = () => {
     const [addressError, setAddressError] = useState('');
     const [city, setCity] = useState('');
     const [user, setUser] = useState(null);
-    // const [productId, setProductId] = useState('');
     const [deleted, setDeleted] = useState(false);
 
-    // Handle user state changes
+
+    const User = user ? user?.email : user;
+    const { productId } = route.params
+    const totalPrice = Math.floor(route.params?.totalPrice * 100 || 0);
+    const { products } = route.params
+    const userAddress = { User, totalPrice, productId, country, fullname, phone, address, city }
+
+
+    const deleteFirestoreData = () => {
+        firestore()
+            .collection('products')
+            .doc(productId)
+            .delete()
+            .then(() => {
+                setDeleted(true);
+            })
+            .catch((e) => console.log('Error deleting posst.', e));
+    };
+
+
+    const makePayment = () => {
+        var options = {
+            description: 'Credits towards consultation',
+            image: 'https://pbs.twimg.com/profile_images/1214220012979920898/N4tFtfjN_400x400.png',
+            currency: 'INR',
+            key: 'rzp_test_fk8lfiNJSir6lr',
+            amount: totalPrice,
+            name: 'Amazon',
+            prefill: {
+                email: User,
+                contact: phone,
+                name: 'Razorpay Software'
+            },
+            theme: { color: '#F37254' }
+        }
+        RazorpayCheckout.open(options).then((data) => {
+            // handle success
+            const paymentId = data.razorpay_payment_id
+            const conformOrder = "Order Conform"
+            Alert.alert('Success:',  `Our ${conformOrder}`, [
+                { text: 'Close', onPress: () => console.log('alert CLosed') }
+            ]);
+            deleteFirestoreData()
+            Checkout.addCheckout(products, userAddress, paymentId, conformOrder)
+            navigation.navigate('HomeStack')
+            return;
+        }).catch((error) => {
+            // handle failure
+            Alert.alert(`Error: ${error.code} | ${error.description}`);
+            return;
+        });
+    }
+
+
+
     const onAuthStateChanged = (user) => {
         setUser(user);
     }
@@ -47,23 +102,9 @@ const AddressScreen = () => {
     //     return () => Products();
     // }, []);
 
-    const User = user ? user?.email : user;
-    const { productId } = route.params
 
+    const onCheckout = async () => {
 
-    const deleteFirestoreData = () => {
-        firestore()
-            .collection('products')
-            .doc(productId)
-            .delete()
-            .then(() => {
-                setDeleted(true);
-            })
-            .catch((e) => console.log('Error deleting posst.', e));
-    };
-
-
-    const onCheckout = () => {
         if (addressError) {
             Alert.alert('Fix all field errors before submiting');
             return;
@@ -79,10 +120,9 @@ const AddressScreen = () => {
             return;
         }
 
-        Address.addAddress(User, productId, country, fullname, phone, address, city)
+        Address.addAddress(userAddress)
             .then(() => {
-                navigation.navigate('HomeStack')
-                deleteFirestoreData()
+                makePayment()
             })
             .catch(
                 err => Alert.alert(err.code, err.message))
@@ -94,7 +134,7 @@ const AddressScreen = () => {
         }
     };
 
-    console.log('productId..2', productId)
+
 
     return (
         <KeyboardAvoidingView
@@ -167,12 +207,12 @@ const AddressScreen = () => {
                         onChangeText={setCity}
                     />
                 </View>
-
-                <Button
+                < Button
                     text="Checkout"
                     onPress={onCheckout}
                     containerStyles={{ backgroundColor: '#f59b42', }}
                 />
+
             </ScrollView>
         </KeyboardAvoidingView>
     )

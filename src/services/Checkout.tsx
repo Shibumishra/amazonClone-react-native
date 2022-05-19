@@ -1,11 +1,11 @@
 import firebase from "@react-native-firebase/firestore";
 import { Alert } from "react-native";
 
-const addAddress = async (userAddress) => {
-    return await firebase()
-        .collection('address')
+const addCheckout = (products, userAddress, paymentId, conformOrder) => {
+    return firebase()
+        .collection('checkout')
         .doc()
-        .set({ userAddress })
+        .set({ products, userAddress, paymentId, conformOrder })
         .catch(err => err)
 }
 
@@ -22,6 +22,6 @@ const addAddress = async (userAddress) => {
 // }
 
 
-export default Address = {
-    addAddress,
+export default Checkout = {
+    addCheckout,
 }

@@ -7,7 +7,7 @@ interface ButtonProps {
     containerStyles?: object;
 }
 
-const Button = ({ text, onPress, containerStyles}: ButtonProps) => {
+const Button = ({ text,  onPress, containerStyles}: ButtonProps) => {
     return (
         <Pressable onPress={onPress} style={[styles.root, containerStyles]}>
             <Text style={styles.text}>{text}</Text>

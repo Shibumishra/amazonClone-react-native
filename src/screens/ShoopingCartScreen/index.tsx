@@ -17,11 +17,6 @@ const ShoopingCartScreen = () => {
     const [productId, setProductId] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const onCheckout = () => {
-        navigation.navigate('Address', { productId: productId });
-    }
-
-
 
     const loadData = async () => {
         await AddToCartProduct.getProduct()
@@ -49,8 +44,16 @@ const ShoopingCartScreen = () => {
     //     setPrice(totalPrice)
     // }, [])
 
-    const totalPrice = products &&
-        products.reduce((acc, item) => acc + item?.data?.price, 0)
+    const totalPrice = products && products.reduce((acc, item) => acc + item?.data?.price, 0);
+
+    const onCheckout = () => {
+        navigation.navigate('Address',
+            {
+                productId: productId,
+                totalPrice: totalPrice,
+                products: products
+            });
+    }
 
     if (loading) {
         return <ActivityIndicator />;
@@ -67,7 +70,7 @@ const ShoopingCartScreen = () => {
                     <View>
                         <Text style={{ fontSize: 18 }}>Subtotal: ({products.length} item):
                             {' '}
-                            <Text style={{ color: '#e47911', fontWeight: 'bold' }}>${totalPrice?.toFixed(2)}</Text>
+                            <Text style={{ color: '#e47911', fontWeight: 'bold' }}>Rs. {totalPrice?.toFixed(2)}</Text>
                         </Text>
                         <Button
                             text="Proceed to checkout"

@@ -1,11 +1,11 @@
 import firebase from "@react-native-firebase/firestore";
 import { Alert } from "react-native";
 
-const addAddress = async (userAddress) => {
+const addPayment = async (totalPrice) => {
     return await firebase()
-        .collection('address')
+        .collection('payment')
         .doc()
-        .set({ userAddress })
+        .set({ totalPrice })
         .catch(err => err)
 }
 
@@ -22,6 +22,6 @@ const addAddress = async (userAddress) => {
 // }
 
 
-export default Address = {
-    addAddress,
+export default Payment = {
+    addPayment,
 }
