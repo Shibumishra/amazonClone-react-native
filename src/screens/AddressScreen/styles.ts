@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from 'react-native';
 
 const styles = StyleSheet.create({
     root: {
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'lightgrey',
         borderRadius: 2,
+        
     },
     errorLabel: {
         color: 'red',

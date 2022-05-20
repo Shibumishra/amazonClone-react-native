@@ -17,7 +17,7 @@ const Button = ({ text,  onPress, containerStyles}: ButtonProps) => {
 
 const styles = StyleSheet.create({
     root: {
-        marginVertical: 10,
+        marginVertical: 5,
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',

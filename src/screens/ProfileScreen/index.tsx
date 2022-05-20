@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, useColorScheme } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Button from '../../components/Button';
 import { Auth } from '../../services';
 import firestore from '@react-native-firebase/firestore';
 
 const ProfileScreen = ({ user }) => {
+    const isDarkMode = useColorScheme() === 'dark';
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -28,9 +30,16 @@ const ProfileScreen = ({ user }) => {
     }
 
     return (
-        <View style={{margin: 10, }}>
+        <View style={{ margin: 10, }}>
             <Text>
-                <Text style={{fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>Welcome to, {users?.email}</Text>
+                <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    textAlign: 'center',
+                    color: isDarkMode ? Colors.white : Colors.black
+                }}
+                >Welcome to, {users?.email}
+                </Text>
             </Text>
             <TouchableOpacity>
                 <Button text="SignOut"

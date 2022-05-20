@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Image, useWindowDimensions } from 'react-native';
+import { View, Image, useWindowDimensions, useColorScheme } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import CoustomInput from '../../components/CoustomInput';
 import logo from '../../images/amazon.png';
 import styles from './styles';
@@ -8,15 +9,12 @@ import { useNavigation } from '@react-navigation/native';
 import { Auth } from '../../services';
 
 const Signin = () => {
+    const isDarkMode = useColorScheme() === 'dark';
     const { height } = useWindowDimensions();
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const onSignIn = () => {
-        console.warn('on SignIn');
-        Auth.signIn(email, password)
-    }
 
     const onAccount = () => {
         navigation.navigate('Signup')
@@ -24,6 +22,7 @@ const Signin = () => {
     const forgotPassword = () => {
         navigation.navigate('ForgotPassword')
     }
+    
 
     return (
         <View style={styles.root}>
@@ -32,6 +31,7 @@ const Signin = () => {
                 placeholder="Email"
                 value={email}
                 setValue={setEmail}
+                placeholderTextColor={ isDarkMode ? Colors.white : Colors.black}
             />
 
             <CoustomInput
@@ -39,6 +39,7 @@ const Signin = () => {
                 value={password}
                 setValue={setPassword}
                 secureTextEntry={true}
+                placeholderTextColor={ isDarkMode ? Colors.white : Colors.black}
             />
             <Button
                 text="Sign In"

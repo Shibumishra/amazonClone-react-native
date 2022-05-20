@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, ScrollView, Text } from 'react-native';
+import { Alert, ScrollView, Text, useColorScheme } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
@@ -23,6 +24,7 @@ interface ProductItemProps {
 };
 
 const ProductScreen = () => {
+    const isDarkMode = useColorScheme() === 'dark';
     const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined,);
     const [quantity, setQuantity] = useState(1);
 
@@ -50,27 +52,37 @@ const ProductScreen = () => {
     }
 
     return (
-        <ScrollView style={styles.root}>
-            <Text style={styles.title}>{title}</Text>
+        <ScrollView alwaysBounceVertical={true} style={styles.root}>
+            <Text style={[styles.title,
+            {
+                color: isDarkMode ? Colors.white : Colors.black,
+            },
+            ]}>{title}</Text>
 
             {/* Image Carousel */}
             <ImageCarousel images={images} />
 
             {/* Option Selector */}
-            <Text>Colour:</Text>
+            <Text style={{ color: isDarkMode ? Colors.white : Colors.black }}>Colour:</Text>
             <Picker
                 selectedValue={selectedOption}
                 onValueChange={(itemValue, itemIndex) =>
                     setSelectedOption(itemValue)
                 }
+                style={{ color: isDarkMode ? Colors.white : Colors.black }}
+                dropdownIconColor={isDarkMode ? Colors.white : Colors.black}
             >
-                {data.options.map(options => (
-                    <Picker.Item label={options} value={options} />
+                {data?.options?.map(options => (
+                    <Picker.Item key={options} label={options} value={options} />
                 ))}
             </Picker>
 
             {/* Price */}
-            <Text style={styles.price}>
+            <Text style={[styles.price,
+            {
+                color: isDarkMode ? Colors.white : Colors.black,
+            },
+            ]}>
                 from Rs. {price.toFixed(2)}
                 {oldPrice && (
                     <Text style={styles.oldPrice}> ${oldPrice.toFixed(2)}</Text>
@@ -78,7 +90,11 @@ const ProductScreen = () => {
             </Text>
 
             {/* Description */}
-            <Text style={styles.description}>{description}</Text>
+            <Text style={[styles.description,
+            {
+                color: isDarkMode ? Colors.white : Colors.black,
+            },
+            ]}>{description}</Text>
 
             {/* Qunatiti Selector */}
             <QuantitySelector quantity={quantity} setQuantity={setQuantity} />

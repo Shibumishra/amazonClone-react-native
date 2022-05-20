@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Image, Text, View } from 'react-native';
+import {  Image, Text, View, useColorScheme } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import QuantitySelector from '../QuantitySelector';
 import { useRoute } from '@react-navigation/native';
@@ -24,6 +25,7 @@ interface CartProductItemProps {
 };
 
 const CartProductItem = ({ cartItem }: CartProductItemProps) => {
+  const isDarkMode = useColorScheme() === 'dark';
   const route = useRoute()
   const { data } = cartItem;
   const [quantity, setQuantity] = useState(0);
@@ -33,7 +35,11 @@ const CartProductItem = ({ cartItem }: CartProductItemProps) => {
       <View style={styles.row}>
         <Image style={styles.image} source={{ uri: data?.image }} />
         <View style={styles.rightContainer}>
-          <Text style={styles.title} numberOfLines={3}>
+          <Text style={[styles.title,
+            {
+              color: isDarkMode ? Colors.white : Colors.black,
+            },
+          ]} numberOfLines={3}>
             {data?.title}
           </Text>
 
@@ -51,7 +57,12 @@ const CartProductItem = ({ cartItem }: CartProductItemProps) => {
             ))}
             <Text>{data?.ratings}</Text>
           </View>
-          <Text style={styles.price}>
+          <Text style={[
+            styles.price,
+            {
+              color: isDarkMode ? Colors.white : Colors.black,
+            },
+          ]}>
             from Rs. {data?.price}
             {data?.oldPrice && (
               <Text style={styles.oldPrice}> ${data?.oldPrice}</Text>

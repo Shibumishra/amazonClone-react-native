@@ -1,49 +1,65 @@
 import React from 'react'
-import { Text, SafeAreaView, View, TextInput } from 'react-native';
+import { SafeAreaView, View, TextInput, useColorScheme, StyleSheet } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 interface HeaderComponentProps {
     searchValue: string;
-    setSearchValue: (setSearchValue: string) => void;
+    searchFilterFunction: (searchFilterFunction: string) => void;
 }
 
 
-const Header = ({ searchValue, setSearchValue, }: HeaderComponentProps) => {
+const Header = ({ searchValue, searchFilterFunction, }: HeaderComponentProps) => {
+    const isDarkMode = useColorScheme() === 'dark';
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#22e3dd' }}>
+        <SafeAreaView style={styles.header} >
             <View
-                style={{
-                    margin: 10,
-                    padding: 5,
-                    backgroundColor: 'white',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    borderRadius: 5,
-                    justifyContent: "space-between"
-                }}>
-                <View style={{
-                    backgroundColor: 'white',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                }}>
-                    <Feather name="search" size={20} />
+                style={styles.section}>
+                <View style={[styles.inputView
+                ]} >
+                    <Feather name="search" size={20} style={{ color: isDarkMode ? Colors.white : Colors.black }} />
                     <TextInput
-                        style={{ height: 40, marginLeft: 10 }}
+                        style={styles.textInput}
+                        placeholderTextColor={ isDarkMode ? Colors.white : Colors.black}
                         placeholder="Search Amazon.in"
+                        onChangeText={(text) => searchFilterFunction(text)}
                         value={searchValue}
-                        onChangeText={setSearchValue}
                     />
                 </View>
                 <View>
-                    <AntDesign name="scan1" size={20} />
+                    <AntDesign name="scan1" size={20} style={{ color: isDarkMode ? Colors.white : Colors.black }} />
                 </View>
             </View>
-            
+
         </SafeAreaView>
     )
 }
 
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#22e3dd',
+    },
+    section: {
+        margin: 10,
+        padding: 5,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 5,
+        justifyContent: "space-between"
+    },
+    inputView: {
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    textInput: {
+        height: 40,
+        marginLeft: 10,
+        color: 'green',
+    }
+})
 export default Header;

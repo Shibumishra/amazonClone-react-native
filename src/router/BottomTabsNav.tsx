@@ -21,16 +21,21 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabsNav = () => {
   const [products, setProducts] = useState([]);
-  const totalCart = products ? products?.length : 0;
+  const totalCart = products?.length || 0;
+
+  const getTotalCart = async () => {
+    await AddToCartProduct.getProduct()
+      .then(prod => {
+        setProducts(prod)
+      })
+      .catch(err => Alert.alert(err.code, err.message))
+  }
 
   useEffect(() => {
-      AddToCartProduct.getProduct()
-          .then(prod => {
-              setProducts(prod)
-          })
-          .catch(err => Alert.alert(err.code, err.message))
-  }, []);
+    getTotalCart();
+  }, [])
 
+  
   return (
     <Tab.Navigator
       screenOptions={() => ({

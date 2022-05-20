@@ -1,16 +1,16 @@
 import firebase from "@react-native-firebase/firestore";
 import { Alert } from "react-native";
 
-const addProduct = (data) => {
-    return firebase()
+const addProduct = async (data) => {
+    return await firebase()
         .collection('products')
         .doc()
         .set({ data })
         .catch(err => err)
 }
 
-const getProduct = () => {
-    return firebase()
+const getProduct = async () => {
+    return await firebase()
         .collection('products')
         .get()
         .then(snap => {

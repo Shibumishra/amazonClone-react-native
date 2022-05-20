@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import ProductItem from '../../components/ProductItem';
-import products from '../../data/product1';
 
-const HomeScreen = ({ searchValue }: { searchValue: string }) => {
-    const [loading, setLoading] = useState(true);
-    console.log(searchValue);
+const HomeScreen = ({ filteredDataSource }: { filteredDataSource: string }) => {
 
 
-    useEffect(() => {
-        if (products.length) {
-            return setLoading(false)
-        }
-    }, [])
-
-    
-    if (loading) {
-        return <ActivityIndicator />;
-    }
 
     return (
         <View style={styles.page}>
-            {products && (
+            {filteredDataSource && (
                 <FlatList
-                    data={products}
+                    data={filteredDataSource}
                     renderItem={({ item }) => <ProductItem item={item} />}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
@@ -35,7 +22,7 @@ const HomeScreen = ({ searchValue }: { searchValue: string }) => {
 
 const styles = StyleSheet.create({
     page: {
-        padding: 10,
+        paddingHorizontal: 10,
     }
 });
 export default HomeScreen;
